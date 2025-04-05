@@ -198,4 +198,5 @@ jobs:
         gh_token: ${{ secrets.REPO_TOKEN }}
         
     - name: 触发启动"${{ matrix.target }}"开始编译
+      if: steps.compile.outcome == 'success'
       uses: 281677160/common@trigger
