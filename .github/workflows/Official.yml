@@ -9,34 +9,33 @@
 #
 #
 
-name: Lede-大雕
+name: Official-官方
 on:
   workflow_dispatch:
     inputs:
       REPO_BRANCH:
-        description: '大雕源码'
+        description: '（官方源码）请选择源码分支'
         required: true
-        default: 'master'
+        default: 'openwrt-24.10'
         type: choice
         options:
+          - 'openwrt-24.10'
+          - 'openwrt-23.05'
+          - 'openwrt-22.03'
+          - 'openwrt-21.02'
+          - 'openwrt-19.07'
           - 'master'
+          - 'main'
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true
         default: 'x86_64'
         type: choice
         options:
+          - '1907-phicomm-k3'
           - 'aarch64'
-          - 'asus_rt-acrh17'
-          - 'd-team_newifi-d2'
-          - 'p2w_r619ac-128m'
-          - 'phicomm_k2p'
-          - 'x86_32'
+          - 'phicomm_k3'
           - 'x86_64'
-          - 'xiaomi_mi-router-4a-gigabit'
-          - 'xiaomi_redmi-router-ac2100'
-          - 'xiaomi_redmi-router-ax6s'
-          - 'xiaoyu_xy-c5'
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'
         required: true
@@ -109,13 +108,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede]
+        target: [Official]
         
-        # 请勿对 target: [Lede] 做任何修改
+        # 请勿对 target: [Official] 做任何修改
         
     steps:
     - name: 密匙检测（密匙为空则退出）
-      uses: 281677160/common@mishi
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        if [[ -n "${{ env.REPO_TOKEN }}" ]]; then
+          curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" \
+          https://api.github.com/repos/281677160/common/releases/tag/API > mishi
+          if [[ `grep -c "Bad credentials" mishi` -ge '1' ]]; then
+            echo "您的密匙不正确或已过期，请按教程设置好密匙再来"
+            echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+            exit 1
+          fi
+        elif [[ -z "${{ env.REPO_TOKEN }}" ]]; then
+          echo "您没有设置仓库密匙，请按教程设置好密匙再来"
+          echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+          exit 1
+        fi
     
     - name: 准备结束
       uses: actions/checkout@v4
@@ -162,11 +175,42 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu2
-        echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
  
-    - name: 运行其他和SSH远程连接（make menuconfig）
+    - name: 更新插件源
+      if: env.REPO_TOKEN
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu3
+ 
+    - name: 加载自定义设置
+      if: env.REPO_TOKEN
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu4
+        
+    - name: 安装插件源
+      if: env.REPO_TOKEN
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu5
+    
+    - name: SSH远程连接（make menuconfig）
+      if: env.SSH_ACTION == 'true'
+      uses: danshui-git/debugger-action@main
+
+    - name: 生成"${{ matrix.target }}"配置文件
+      if: env.REPO_TOKEN
       id: compile
-      uses: 281677160/common@need
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu6
+        
+    - name: 上传"${{ matrix.target }}"配置文件在 Github Artifacts
+      if: steps.compile.outcome == 'success'
+      uses: actions/upload-artifact@main
+      with:
+        name: .config_${{ env.SOURCE }}_${{ env.LUCI_EDITION }}_${{ env.TARGET_PROFILE }}_${{ env.Firmware_Date }}
+        path: openwrt/build_logo/config.txt
         
     - name: 编译信息
       continue-on-error: true
