@@ -62,7 +62,7 @@ export Cancel_running="0"                    # 取消路由器每天跑分任务
 export amlogic_model="s905d"
 export amlogic_kernel="5.10.01_6.1.01"
 export auto_kernel="true"
-export rootfs_size="2560"
+export rootfs_size="512/2560"
 export kernel_usage="stable"
 
 
