@@ -116,9 +116,6 @@ jobs:
     steps:
     - name: 密匙检测（密匙为空则退出）
       uses: 281677160/common@mishi
-    
-    - name: 准备结束
-      uses: actions/checkout@v4
 
     - name: 检测文件和对比上游版本
       run: |
