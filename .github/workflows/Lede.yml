@@ -50,6 +50,10 @@ on:
         description: '清理[X]分钟之后的所有操作记录(最低30)'
         required: true
         default: '10080'
+      KEEP_LATEST:
+        description: '清理Releases,保留[X]个Releases不被清理'
+        required: true
+        default: '30'
       SSH_ACTION:
         description: 'SSH远程配置固件'
         required: false
@@ -134,7 +138,7 @@ jobs:
         export INPUTS_UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
         export INPUTS_CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
         export INPUTS_UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
-        export INPUTS_COMPILATION_INFORMATION="${{ github.event.inputs.COMPILATION_INFORMATION }}"
+        export INPUTS_KEEP_LATEST="${{ github.event.inputs.KEEP_LATEST }}"
         export INPUTS_PACKAGING_FIRMWARE="${{ github.event.inputs.PACKAGING_FIRMWARE }}"
         source build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
 
