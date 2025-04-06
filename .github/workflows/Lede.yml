@@ -113,15 +113,15 @@ jobs:
         # 请勿对 target: [Lede] 做任何修改
         
     steps:
+    - name: 准备结束
+      uses: actions/checkout@v4
+      
     - name: 检测文件和对比上游版本
       run: |
         echo ${PWD}
         ls -a
     - name: 密匙检测（密匙为空则退出）
       uses: 281677160/common@mishi
-
-    - name: 准备结束
-      uses: actions/checkout@v4
 
     - name: 检测文件和对比上游版本
       run: |
