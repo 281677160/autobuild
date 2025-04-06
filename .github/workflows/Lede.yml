@@ -86,16 +86,13 @@ on:
 #   - cron: 35 18 * * *
 
 env:
-  GITHUB_LINK: https://github.com/${{github.repository}}
-  GIT_ACTOR: ${{github.actor}}
   GIT_REPOSITORY: ${{github.repository}}
-  RUN_NUMBER: ${{github.run_number}}
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TZ: Asia/Shanghai
-  GIT_REFNAME: ${{ github.ref_name }}
+
 jobs:
   build:
     name: 启动"${{ matrix.target }}-${{ github.event.inputs.REPO_BRANCH }}"触发编译
