@@ -136,7 +136,7 @@ jobs:
       run: |
         cd ${GITHUB_WORKSPACE}
         cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_menu2
+        source $COMMON_SH && Diy_menu2
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
  
     - name: 运行其他和SSH远程连接（make menuconfig）
@@ -148,7 +148,7 @@ jobs:
       if: env.COMPILATION_INFORMATION == 'true'
       run: |
         cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_xinxi
+        source $COMMON_SH && Diy_xinxi
     
     - name: 清理Actions空间
       continue-on-error: true
