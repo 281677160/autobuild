@@ -122,22 +122,7 @@ jobs:
     - name: 检测文件和对比上游版本
       run: |
         cd ${GITHUB_WORKSPACE}
-        curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh -o first.sh
-        chmod -R +x first.sh
-        source first.sh
-        echo "${OPER_ATES}"
-        export INPUTS_REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
-        export INPUTS_CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
-        export INPUTS_RETAIN_MINUTE="${{ github.event.inputs.RETAIN_MINUTE }}"
-        export INPUTS_INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
-        export INPUTS_SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
-        export INPUTS_UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
-        export INPUTS_UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
-        export INPUTS_CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
-        export INPUTS_UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
-        export INPUTS_KEEP_LATEST="${{ github.event.inputs.KEEP_LATEST }}"
-        export INPUTS_PACKAGING_FIRMWARE="${{ github.event.inputs.PACKAGING_FIRMWARE }}"
-        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+        exit 0
 
     - name: 部署编译环境
       env:
