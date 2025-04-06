@@ -96,7 +96,7 @@ env:
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TZ: Asia/Shanghai
-
+  GIT_REFNAME: ${{ github.ref_name }}
 jobs:
   build:
     name: 启动"${{ matrix.target }}-${{ github.event.inputs.REPO_BRANCH }}"触发编译
@@ -118,7 +118,7 @@ jobs:
       
     - name: 检测文件和对比上游版本
       run: |
-        echo ${PWD}
+        echo ${GIT_REFNAME}
         ls -a
     - name: 密匙检测（密匙为空则退出）
       uses: 281677160/common@mishi
