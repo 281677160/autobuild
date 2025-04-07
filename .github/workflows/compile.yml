@@ -41,16 +41,8 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@v4
 
-    - name: 检测文件和对比上游版本
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
-        if [[ -n "${{ github.event.workflow }}" ]] || [[ -n "${{ github.event.schedule }}" ]]; then
-          source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini
-        else
-          source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini
-        fi
-        source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
+    - name: 密匙检测（密匙为空则退出）
+      uses: 281677160/common@mishi
 
     - name: 释放Ubuntu磁盘空间
       uses: endersonmenezes/free-disk-space@v2
@@ -85,7 +77,7 @@ jobs:
     - name: 公 告
       run: |
         cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_menu2
+        source $COMMON_SH && Diy_menu2
  
     - name: 运行自定义文件和其他
       uses: 281677160/common@need
@@ -95,7 +87,7 @@ jobs:
       if: env.COMPILATION_INFORMATION == 'true'
       run: |
         cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_xinxi
+        source $COMMON_SH && Diy_xinxi
         
     - name: 缓存加速
       if: env.CACHEWRTBUILD_SWITCH == 'true'
@@ -130,7 +122,7 @@ jobs:
       if: steps.compile.outcome == 'success'
       run: |
         cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_firmware
+        source $COMMON_SH && Diy_firmware
 
     - name: 发送[在线更新固件]至云端
       if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
