@@ -103,6 +103,7 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
+        echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
 
     - name: 自动打包aarch64系列固件
       if: steps.compile.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
