@@ -57,7 +57,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_update
+        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown ${USER}:${GROUPS} /${{ env.DIY_WORK }}
