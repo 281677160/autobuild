@@ -78,9 +78,7 @@ jobs:
     - name: 编译信息
       continue-on-error: true
       if: env.COMPILATION_INFORMATION == 'true'
-      run: |
-        cd openwrt
-        source $COMMON_SH && Diy_xinxi
+      uses: 281677160/common@message
         
     - name: 缓存加速
       if: env.CACHEWRTBUILD_SWITCH == 'true'
