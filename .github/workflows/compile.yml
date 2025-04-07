@@ -13,11 +13,7 @@ on:
       - 'build/Lede/relevance/start'
 
 env:
-  GITHUB_LINK: https://github.com/${{github.repository}}
-  GIT_ACTOR: ${{github.actor}}
   GIT_REPOSITORY: ${{github.repository}}
-  RUN_NUMBER: ${{github.run_number}}
-  RUN_WORKFLOW: ${{github.workflow}}
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -71,13 +67,10 @@ jobs:
       run: |
         git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
-        cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/openwrt/build
-        chmod -R +x ${GITHUB_WORKSPACE}/openwrt
     
-    - name: 公 告
-      run: |
-        cd openwrt
-        source $COMMON_SH && Diy_menu2
+    - name: 公告
+      continue-on-error: true
+      uses: 281677160/common@message
  
     - name: 运行自定义文件和其他
       uses: 281677160/common@need
