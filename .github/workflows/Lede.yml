@@ -130,14 +130,11 @@ jobs:
       run: |
         git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
-    
-    - name: 公 告
-      if: env.REPO_TOKEN
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        cd openwrt
-        source $COMMON_SH && Diy_menu2
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
+    
+    - name: 公告
+      continue-on-error: true
+      uses: 281677160/common@message
  
     - name: 运行其他和SSH远程连接（make menuconfig）
       id: info
