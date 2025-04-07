@@ -147,8 +147,6 @@ jobs:
       continue-on-error: true
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
-      with:
-        info: '${{ steps.info.outcome }}'
     
     - name: 清理Actions空间
       continue-on-error: true
