@@ -140,7 +140,7 @@ jobs:
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
  
     - name: 运行其他和SSH远程连接（make menuconfig）
-      id: compile
+      id: info
       uses: 281677160/common@need
         
     - name: 编译信息
@@ -171,5 +171,5 @@ jobs:
         gh_token: ${{ secrets.REPO_TOKEN }}
         
     - name: 触发启动"${{ matrix.target }}"开始编译
-      if: steps.compile.outcome == 'success'
+      if: steps.info.outcome == 'success'
       uses: 281677160/common@trigger
