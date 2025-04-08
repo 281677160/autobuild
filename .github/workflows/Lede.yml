@@ -154,7 +154,7 @@ jobs:
       continue-on-error: true
       uses: 281677160/common@message
  
-    - name: 运行其他和SSH远程连接（make menuconfig）
+    - name: 运行其他和SSH远程(make menuconfig)
       id: info
       uses: 281677160/common@need
         
