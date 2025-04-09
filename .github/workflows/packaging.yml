@@ -219,11 +219,11 @@ jobs:
     name: 打包aarch64系列固件
     runs-on: ubuntu-22.04
     steps:
-    - name: 密匙检测（密匙为空则退出）
-      uses: 281677160/common@mishi
-    
     - name: 准备结束
       uses: actions/checkout@v4
+
+    - name: 密匙检测（密匙为空则退出）
+      uses: 281677160/common@mishi
 
     - name: 检测文件
       run: |
