@@ -290,6 +290,6 @@ jobs:
       id: compile
       uses: 281677160/common@aarch
 
-    - name: 上传,发布,信息通知
+    - name: 上传,发布
       if: steps.compile.outcome == 'success'
       uses: 281677160/common@uploads
