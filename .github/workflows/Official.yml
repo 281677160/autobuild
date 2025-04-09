@@ -36,7 +36,7 @@ on:
           - 'aarch64'
           - 'phicomm_k3'
           - 'x86_64'
-       INFORMATION_NOTICE:
+      INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'
         required: true
         default: '关闭'
