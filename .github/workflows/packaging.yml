@@ -265,9 +265,13 @@ jobs:
     - name: 拉取rootfs.tar.gz
       working-directory: /workdir
       run: |
-        mkdir -p openwrt/bin/targets
+        git clone -b 21.02 --single-branch https://github.com/Lienol/openwrt openwrt
         ln -sf /workdir/openwrt ${GITHUB_WORKSPACE}/openwrt
+
+    - name: 检测文件
+      run: |
         cd ${GITHUB_WORKSPACE}/openwrt
+        mkdir -p ${GITHUB_WORKSPACE}/openwrt/bin/targets
         curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/targz > aarch
         if [[ -n "$(cat "aarch" |grep -E 'Not Found')" ]]; then
           echo -e "\033[31m Releases里的没有targz名称的tag存在 \033[0m"
@@ -276,7 +280,7 @@ jobs:
           echo -e "\033[31m Releases里的targz没有${SOURCE}-armvirt-64-default-rootfs.tar.gz存在 \033[0m"
           exit 1
         elif [[ -n "$(cat "aarch" |grep -E 'rootfs.tar.gz')" ]]; then
-          wget -q https://github.com/${{ github.repository }}/releases/download/targz/${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz -O bin/targets/openwrt-armvirt-64-default-rootfs.tar.gz
+          wget -q https://github.com/${{ github.repository }}/releases/download/targz/${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz -O ${GITHUB_WORKSPACE}/openwrt/bin/targets/openwrt-armvirt-64-default-rootfs.tar.gz
         else
           echo -e "\033[31m 未知情况 \033[0m"
           exit 1
