@@ -45,6 +45,10 @@ on:
         description: '清理[X]分钟之后的所有操作记录(最低30)'
         required: true
         default: '10080'
+      KEEP_LATEST:
+        description: '清理Releases,保留[X]个Releases不被清理'
+        required: true
+        default: '30'
       SSH_ACTION:
         description: 'SSH远程配置固件'
         required: false
@@ -66,12 +70,7 @@ on:
         default: 'true'
         type: boolean
       UPDATE_FIRMWARE_ONLINE:
-        description: '增加在线更新固件功能/自动打包aarch64系列固件'
-        required: false
-        default: 'true'
-        type: boolean
-      COMPILATION_INFORMATION:
-        description: '是否显示编译信息'
+        description: '在线更新固/打包aarch64系列为img固件'
         required: false
         default: 'true'
         type: boolean
