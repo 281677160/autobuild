@@ -237,6 +237,7 @@ jobs:
         echo "UPLOAD_FIRMWARE=${{ inputs.UPLOAD_FIRMWARE }}" >> $GITHUB_ENV
         echo "UPLOAD_RELEASE=${{ inputs.UPLOAD_RELEASE }}" >> $GITHUB_ENV
         echo "date=$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+        echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
         echo "date_tg=$(date +"%Y.%m%d.%H%M")" >> ${GITHUB_ENV}
 
     - name: 释放Ubuntu磁盘空间
