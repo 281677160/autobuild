@@ -281,3 +281,6 @@ jobs:
     - name: 自动打包aarch64系列固件
       id: compile
       uses: 281677160/common@aarch
+
+    - name: 自动打包aarch64系列固件
+      uses: 281677160/common@uploads
