@@ -224,7 +224,7 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@v4
 
-    - name: 检测文件
+    - name: 整理变量
       run: |
         cd $GITHUB_WORKSPACE
         echo "SOURCE=${{ inputs.source_branch }}" >> ${GITHUB_ENV}
@@ -258,7 +258,7 @@ jobs:
         echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
         echo "FIRMWARE_PATH=${GITHUB_WORKSPACE}/openwrt/bin/targets" >> $GITHUB_ENV
 
-    - name: 检测文件
+    - name: 检查文件
       run: |
         cd ${HOME_PATH}
         curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/targz > aarch
@@ -273,10 +273,10 @@ jobs:
         fi
         find $FIRMWARE_PATH -type f -name "*.tar.gz" -size -1M -delete
 
-
     - name: 自动打包aarch64系列固件
       id: compile
       uses: 281677160/common@aarch
 
-    - name: 自动打包aarch64系列固件
+    - name: 上传,发布
+      if: steps.compile.outcome == 'success'
       uses: 281677160/common@uploads
