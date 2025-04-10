@@ -215,7 +215,6 @@ env:
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   PACKAGING_FIRMWARE: true
   LUCI_EDITION: amlogic
-  TARGET_BOARD: amlogic
 
 jobs:
   build:
