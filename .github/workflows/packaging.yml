@@ -263,15 +263,19 @@ jobs:
         cd ${HOME_PATH}
         curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/targz > aarch
         if grep -q "Not Found" aarch; then
-          echo -e "\033[31m Releases里的没有targz名称的tag存在 \033[0m"
+          echo -e "\033[31m Releases里名称为[targz]的tag存在 \033[0m"
           exit 1
         elif grep -q "${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz" aarch; then
           wget -q https://github.com/${{ github.repository }}/releases/download/targz/${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz -O ${FIRMWARE_PATH}/openwrt-armvirt-64-default-rootfs.tar.gz
         else
-          echo -e "\033[31m Releases里的targz没有${SOURCE}-armvirt-64-default-rootfs.tar.gz存在 \033[0m"
+          echo -e "\033[31m Releases里名称为targz的tag没有[${SOURCE}-armvirt-64-default-rootfs.tar.gz]存在 \033[0m"
           exit 1
         fi
-        find $FIRMWARE_PATH -type f -name "*.tar.gz" -size -1M -delete
+        find $FIRMWARE_PATH -type f -name "*.tar.gz" -size -2M -delete
+        if [[ -z "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+          echo -e "\033[31m[${SOURCE}-armvirt-64-default-rootfs.tar.gz]包小于2MB,非正常rootfs.tar.gz包\033[0m"
+          exit 1
+        fi
 
     - name: 自动打包aarch64系列固件
       id: compile
