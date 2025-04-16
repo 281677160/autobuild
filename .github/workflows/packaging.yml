@@ -224,6 +224,9 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@v4
 
+    - name: 密匙检测
+      uses: 281677160/common@yaoshi
+
     - name: 整理变量
       run: |
         cd $GITHUB_WORKSPACE
