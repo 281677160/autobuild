@@ -21,7 +21,7 @@ on:
           - 'Mt798x'
       amlogic_model:
         description: '选择机型'
-        required: false
+        required: true
         default: "s905d"
         type: choice
         options:
@@ -194,7 +194,7 @@ on:
         default: '512/2560'
       auto_kernel:
         description: '是否自动检测最新内核'
-        required: false
+        required: true
         default: 'true'
         type: boolean
       UPLOAD_FIRMWARE:
