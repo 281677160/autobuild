@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       source_branch:
-        description: '选择源码(先确认您已经编译了有)'
+        description: '选择源码(使用本仓库编译成功过的)'
         required: true
         default: 'Lede'
         type: choice
