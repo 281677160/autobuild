@@ -189,7 +189,7 @@ on:
           - 'dev'
           - 'beta'
       openwrt_size:
-        description: '设置rootfs大小(单位：MiB)'
+        description: '设置rootfs[单位：MiB](不想设置可留空)'
         required: false
         default: '512/2560'
       auto_kernel:
