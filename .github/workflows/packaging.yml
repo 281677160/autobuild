@@ -193,7 +193,7 @@ on:
         required: false
         default: '512/2560'
       auto_kernel:
-        description: '是否自动检测最新内核'
+        description: '自动搜索您设置内核为最新版(比如6.1.120在6.1.x系列最新是6.1.130,则用6.1.130)'
         required: false
         default: 'true'
         type: boolean
