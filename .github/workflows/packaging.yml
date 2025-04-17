@@ -190,11 +190,11 @@ on:
           - 'beta'
       openwrt_size:
         description: '设置rootfs大小(单位：MiB)'
-        required: true
+        required: false
         default: '512/2560'
       auto_kernel:
         description: '是否自动检测最新内核'
-        required: true
+        required: false
         default: 'true'
         type: boolean
       UPLOAD_FIRMWARE:
