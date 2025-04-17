@@ -20,7 +20,7 @@ on:
           - 'Xwrt'
           - 'Mt798x'
       amlogic_model:
-        description: '输入机型,比如：s905d 或 s905d_s905x2'
+        description: '选择机型'
         required: false
         default: "s905d"
         type: choice
@@ -175,19 +175,19 @@ on:
           - zk-r39a
           - zysj
       amlogic_kernel:
-        description: '输入内核,比如：5.10.172 或 5.15.97_6.1.16'
+        description: '输入内核,比如：6.1.120 或 6.1.120_6.12.15'
         required: true
         default: '6.1.120_6.12.15'
       kernel_usage:
-        description: "内核仓库：stable、dev、flippy、rk3588"
+        description: "选择内核仓库"
         required: true
         default: 'stable'
         type: choice
         options:
           - 'stable'
-          - 'dev'
           - 'flippy'
-          - 'rk3588'
+          - 'dev'
+          - 'beta'
       openwrt_size:
         description: '设置rootfs大小(单位：MiB)'
         required: true
