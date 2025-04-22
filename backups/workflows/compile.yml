@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Official/relevance/start'
+      - 'build/Lede/relevance/start'
 
 env:
   GIT_REPOSITORY: ${{github.repository}}
@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Official]
+        target: [Lede]
 
     steps:    
     - name: 准备结束
@@ -56,7 +56,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
+        sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown ${USER}:${GROUPS} /${{ env.DIY_WORK }}
@@ -91,10 +91,7 @@ jobs:
       id: package
       run: |
         cd openwrt
-        make defconfig
         make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
     
     - name: 开始编译固件
       id: compile

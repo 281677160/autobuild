@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       source_branch:
-        description: '选择源码(先确认您已经编译了有)'
+        description: '选择源码(您使用本仓库编译成功过的)'
         required: true
         default: 'Lede'
         type: choice
@@ -20,8 +20,8 @@ on:
           - 'Xwrt'
           - 'Mt798x'
       amlogic_model:
-        description: '输入机型,比如：s905d 或 s905d_s905x2'
-        required: false
+        description: '选择机型'
+        required: true
         default: "s905d"
         type: choice
         options:
@@ -175,25 +175,25 @@ on:
           - zk-r39a
           - zysj
       amlogic_kernel:
-        description: '输入内核,比如：5.10.172 或 5.15.97_6.1.16'
+        description: '输入内核,比如：6.1.120 或 6.1.120_6.12.15'
         required: true
         default: '6.1.120_6.12.15'
       kernel_usage:
-        description: "内核仓库：stable、dev、flippy、rk3588"
+        description: "选择内核仓库"
         required: true
         default: 'stable'
         type: choice
         options:
           - 'stable'
-          - 'dev'
           - 'flippy'
-          - 'rk3588'
+          - 'dev'
+          - 'beta'
       openwrt_size:
-        description: '设置rootfs大小(单位：MiB)'
-        required: true
+        description: '设置rootfs[单位：MiB](不想设置可留空)'
+        required: false
         default: '512/2560'
       auto_kernel:
-        description: '是否自动检测最新内核'
+        description: '使用最新版内核(比如您设置6.1.120在6.1.x系列最新是6.1.130,则用6.1.130)'
         required: false
         default: 'true'
         type: boolean
@@ -224,6 +224,22 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@v4
 
+    - name: 密匙检测
+      uses: 281677160/common@yaoshi
+
+    - name: 释放Ubuntu磁盘空间
+      uses: endersonmenezes/free-disk-space@v2
+      with:
+        remove_android: true
+        remove_dotnet: true
+        remove_haskell: true
+        remove_tool_cache: true
+        remove_swap: true
+        remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
+        remove_packages_one_command: true
+        remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/share/glade* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell"
+        testing: false
+
     - name: 整理变量
       run: |
         cd $GITHUB_WORKSPACE
@@ -245,7 +261,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
+        sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
         sudo timedatectl set-timezone "Asia/Shanghai"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
