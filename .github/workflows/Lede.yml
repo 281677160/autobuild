@@ -35,10 +35,6 @@ on:
           - 'phicomm_k3'
           - 'x86_32'
           - 'x86_64'
-          - 'xiaomi_mi-router-4a-gigabit'
-          - 'xiaomi_redmi-router-ac2100'
-          - 'xiaomi_redmi-router-ax6000'
-          - 'xiaomi_redmi-router-ax6s'
           - 'xiaoyu_xy-c5'
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'
