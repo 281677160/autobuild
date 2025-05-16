@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-                                target: [Xwrt]
+                                  target: [Xwrt]
 
     steps:    
     - name: 准备结束
