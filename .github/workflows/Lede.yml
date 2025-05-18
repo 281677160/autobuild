@@ -45,6 +45,15 @@ on:
           - '关闭'
           - 'Telegram'
           - 'Pushplus'
+      CACHEWRTBUILD_SWITCH:
+        description: '缓存设置'
+        required: true
+        default: '关闭'
+        type: choice
+        options:
+          - '关闭'
+          - 'Telegram'
+          - 'Pushplus'
       RETAIN_MINUTE:
         description: '清理[X]分钟之后的所有操作记录(最低30)'
         required: true
@@ -67,11 +76,6 @@ on:
         description: '发布固件到 Github Releases'
         required: false
         default: 'false'
-        type: boolean
-      CACHEWRTBUILD_SWITCH:
-        description: '缓存加速编译'
-        required: false
-        default: 'true'
         type: boolean
       UPDATE_FIRMWARE_ONLINE:
         description: '在线更新固/打包aarch64系列为img固件'
