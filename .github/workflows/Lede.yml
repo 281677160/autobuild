@@ -114,18 +114,6 @@ jobs:
     - name: 检测密匙/文件/版本
       uses: 281677160/common@mishi
 
-    - name: Clear cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/openwrt/dl
-          ~/openwrt/build_dir
-        key: ${{ runner.os }}-.*-cache-openwrt-${{ hashFiles('**/Makefile') }}
-        restore-keys: |
-          ${{ runner.os }}-.*-cache-openwrt-
-      env:
-        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
