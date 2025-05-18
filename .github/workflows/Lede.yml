@@ -48,12 +48,12 @@ on:
       CACHEWRTBUILD_SWITCH:
         description: '缓存设置'
         required: true
-        default: '关闭'
+        default: '开启'
         type: choice
         options:
+          - '开启'
+          - '先清理再启用'
           - '关闭'
-          - 'Telegram'
-          - 'Pushplus'
       RETAIN_MINUTE:
         description: '清理[X]分钟之后的所有操作记录(最低30)'
         required: true
