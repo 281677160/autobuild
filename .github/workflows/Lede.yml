@@ -168,7 +168,7 @@ jobs:
 
         if [ -z "$CACHE_IDS" ]; then
           echo "未找到匹配的缓存，无需操作"
-          return
+          exit 0
         fi
 
         # 删除所有匹配的缓存
