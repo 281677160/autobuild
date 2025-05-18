@@ -145,23 +145,39 @@ jobs:
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
 
-    - name: 删除旧缓存
+    - name: 删除所有匹配的旧缓存
       env:
-        CACHE_KEY: "x86-64-cache-openwrt"
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+        CACHE_KEY_REGEX: ".*-cache-openwr"
       run: |
-        # 获取所有缓存
-        CACHE_ID=$(curl -s -H "Authorization: token $REPO_TOKEN" \
-          "https://api.github.com/repos/${{github.repository}}/actions/caches?key=$CACHE_KEY" \
-          | jq -r '.actions_caches[0].id')
+        set -euo pipefail
+        echo "开始清理匹配正则表达式『${CACHE_KEY_REGEX}』的缓存..."
 
-        # 删除缓存
-        if [ ! -z "$CACHE_ID" ]; then
-          curl -X DELETE -H "Authorization: token $REPO_TOKEN" \
-            "https://api.github.com/repos/${{github.repository}}/actions/caches/$CACHE_ID"
-          echo "已删除缓存 ID: $CACHE_ID"
-        else
-          echo "未找到匹配的缓存"
+        # 获取所有缓存（最多100条，可调整per_page参数）
+        CACHES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/caches?per_page=100" \
+          | jq -r --arg regex "$CACHE_KEY_REGEX" '.actions_caches[] | 
+            select(.key | test($regex)) |  # 使用正则表达式匹配缓存键
+            {id: .id, key: .key, created_at: .created_at}')
+
+        echo "找到以下匹配的缓存:"
+        echo "$CACHES"
+
+        # 提取所有匹配的缓存ID
+        CACHE_IDS=$(echo "$CACHES" | jq -r '.id')
+
+        if [ -z "$CACHE_IDS" ]; then
+          echo "未找到匹配的缓存，无需操作"
+          return
         fi
+
+        # 删除所有匹配的缓存
+        echo "开始删除 ${CACHE_IDS//$'\n'/、} 等共 $(echo "$CACHE_IDS" | wc -l) 个缓存..."
+        echo "$CACHE_IDS" | while read -r cache_id; do
+          curl -X DELETE -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/caches/$cache_id"
+          echo "已删除缓存 ID: $cache_id"
+        done
     
     - name: 清理Actions空间
       continue-on-error: true
