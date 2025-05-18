@@ -160,7 +160,7 @@ jobs:
           
         # 删除最旧的缓存（保留最新的3个）
         CACHE_COUNT=$(echo "$CACHES" | jq -r '.id' | wc -l)
-        if [ $CACHE_COUNT -gt 3 ]; then
+        if [ $CACHE_COUNT -gt 0 ]; then
           CACHES_TO_DELETE=$(echo "$CACHES" | jq -s 'sort_by(.created_at) | .[0:-3]')
           echo "将删除以下缓存:"
           echo "$CACHES_TO_DELETE"
