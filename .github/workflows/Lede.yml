@@ -119,7 +119,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get -qq update -y
-        sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python2.7 python3 python3-pip libpython3-dev
+        sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python2.7 python3 python3-pip libpython3-dev jq
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
@@ -144,6 +144,35 @@ jobs:
       continue-on-error: true
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
+
+    - name: 删除旧缓存
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        CACHE_KEY_PREFIX: "${{ env.TARGET_PROFILE }}-cache-openwrt"  # 缓存键前缀
+      run: |
+        # 获取所有缓存
+        CACHES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/caches?per_page=100" \
+          | jq -r '.actions_caches[] | select(.key | startswith(env.CACHE_KEY_PREFIX)) | {id: .id, key: .key, created_at: .created_at}')
+          
+        echo "找到以下缓存:"
+        echo "$CACHES"
+          
+        # 删除最旧的缓存（保留最新的3个）
+        CACHE_COUNT=$(echo "$CACHES" | jq -r '.id' | wc -l)
+        if [ $CACHE_COUNT -gt 3 ]; then
+          CACHES_TO_DELETE=$(echo "$CACHES" | jq -s 'sort_by(.created_at) | .[0:-3]')
+          echo "将删除以下缓存:"
+          echo "$CACHES_TO_DELETE"
+            
+          echo "$CACHES_TO_DELETE" | jq -r '.[] | .id' | while read -r cache_id; do
+            curl -X DELETE -s -H "Authorization: token $GITHUB_TOKEN" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/caches/$cache_id"
+            echo "已删除缓存 ID: $cache_id"
+          done
+        else
+          echo "无需删除缓存（数量少于或等于3）"
+        fi
     
     - name: 清理Actions空间
       continue-on-error: true
