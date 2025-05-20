@@ -126,8 +126,9 @@ jobs:
 
         echo "找到以下匹配的缓存:"
         echo "$CACHES"
-        
+        CACHE_KEY=$(echo "$CACHES" | jq -r '.key')
         CACHE_IDS=$(echo "$CACHES" | jq -r '.id')
+        echo "$CACHE_KEY"
         echo
 
     - name: 部署编译环境
