@@ -111,8 +111,25 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@v4
       
-    - name: 检测密匙/文件/版本
-      uses: 281677160/common@mishi
+    - name: 清理所有缓存
+      continue-on-error: true
+      if: env.CLEAR_CACHEWRTBUILD == 'true'
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        echo -e "\n\033[33m正在执行：清理缓存\033[0m"
+        set -euo pipefail
+        CACHES=$(curl -s -H "Authorization: token $REPO_TOKEN" \
+          "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches?per_page=100" \
+          | jq -r --arg regex ".*-cache-openwr" '.actions_caches[] |
+            select(.key | test($regex)) |
+            {id: .id, key: .key, created_at: .created_at}')
+
+        echo "找到以下匹配的缓存:"
+        echo "$CACHES"
+        
+        CACHE_IDS=$(echo "$CACHES" | jq -r '.id')
+        echo
 
     - name: 部署编译环境
       env:
