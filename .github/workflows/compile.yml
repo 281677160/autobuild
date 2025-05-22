@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-                                          target: [Lienol]
+                                            target: [Lienol]
 
     steps:    
     - name: 准备结束
