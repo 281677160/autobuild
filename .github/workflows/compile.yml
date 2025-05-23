@@ -30,15 +30,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-                                                      target: [Lede]
+          target: [Lede]
 
-    steps:    
-    - name: 准备结束
-      uses: actions/checkout@v4
-
-    - name: 检测密匙/文件/版本
-      uses: 281677160/common@mishi
-
+    steps:
     - name: 释放Ubuntu磁盘空间
       uses: endersonmenezes/free-disk-space@v2
       with:
@@ -51,11 +45,18 @@ jobs:
         remove_packages_one_command: true
         remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/share/glade* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell"
         testing: false
+    
+    - name: 准备结束
+      uses: actions/checkout@v4
+
+    - name: 检测密匙/文件/版本
+      uses: 281677160/common@mishi
         
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        sudo docker image prune --all --force
         sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /${{ env.DIY_WORK }}
