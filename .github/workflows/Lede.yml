@@ -132,10 +132,9 @@ jobs:
         sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python2.7 python3 python3-pip libpython3-dev snapd
         sudo snap install jq
         sudo timedatectl set-timezone "$TZ"
-        mkdir -p /home/runner/work/${{ env.DIY_WORK }}
-        sudo chown $USER:$GROUPS /home/runner/work/${{ env.DIY_WORK }}
-        echo "WORK_DIR=/home/runner/work/${{ env.DIY_WORK }}" >> $GITHUB_ENV
-        df -hT $PWD
+        mkdir -p /home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}
+        sudo chown $USER:$GROUPS /home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}
+        echo "WORK_DIR=/home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}" >> $GITHUB_ENV
     
     - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
       working-directory: /${{ env.WORK_DIR }}
