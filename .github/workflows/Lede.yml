@@ -109,7 +109,7 @@ jobs:
         
     steps:
     - name: Maximize build space
-      uses: AdityaGarg8/remove-unwanted-software@v1
+      uses: AdityaGarg8/remove-unwanted-software@v4.1
       with:
         remove-android: 'true'
     
