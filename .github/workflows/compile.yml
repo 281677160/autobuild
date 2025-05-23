@@ -66,7 +66,7 @@ jobs:
         git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
         ln -sf /${{ env.WORK_DIR }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
-        cd ${{ env.COMMON_SH }}
+        cd ${{ env.WORK_DIR }}
         df -hT $PWD
   
     
