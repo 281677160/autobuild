@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-            target: [Lede]
+              target: [Lede]
 
     steps:
     - name: 减少磁盘占用
