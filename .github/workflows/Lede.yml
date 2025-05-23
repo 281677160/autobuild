@@ -123,9 +123,6 @@ jobs:
     - name: 检测密匙/文件/版本
       uses: 281677160/common@mishi
 
-    - name: SSH远程连接（make menuconfig）
-      uses: danshui-git/debugger-action@main
-
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
