@@ -114,8 +114,8 @@ jobs:
         root-reserve-mb: 1024
         swap-size-mb: 2048
         remove-dotnet: false
-        remove-haskell: true
-        remove-android: true
+        remove-haskell: false
+        remove-android: false
         remove-docker-images: true
     
     - name: 准备结束
