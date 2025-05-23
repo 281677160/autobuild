@@ -109,16 +109,9 @@ jobs:
         
     steps:
     - name: Maximize build space
-      uses: AdityaGarg8/remove-unwanted-software@v4.1
+      uses: AdityaGarg8/remove-unwanted-software@v1
       with:
         remove-android: 'true'
-    
-    - name: 减少磁盘占用
-      uses: easimon/maximize-build-space@master
-      with:
-        root-reserve-mb: 512
-        swap-size-mb: 1024
-        remove-dotnet: 'true'
     
     - name: 准备结束
       uses: actions/checkout@v4
