@@ -143,6 +143,8 @@ jobs:
         ln -sf /${{ env.WORK_DIR }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
+        cd ${{ env.WORK_DIR }}
+        df -hT $PWD
     
     - name: 公告
       continue-on-error: true
