@@ -107,12 +107,24 @@ jobs:
         
         # 请勿对 target: [Lede] 做任何修改
         
-    steps:    
+    steps:
+    - name: 减少磁盘占用
+      uses: easimon/maximize-build-space@v1
+      with:
+        root-reserve-mb: 1024
+        swap-size-mb: 1024
+        remove-dotnet: 'true'
+        remove-haskell: 'true'
+        remove-android: 'true'
+    
     - name: 准备结束
       uses: actions/checkout@v4
       
     - name: 检测密匙/文件/版本
       uses: 281677160/common@mishi
+
+    - name: SSH远程连接（make menuconfig）
+      uses: danshui-git/debugger-action@main
 
     - name: 部署编译环境
       env:
