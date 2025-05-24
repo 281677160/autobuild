@@ -139,7 +139,7 @@ jobs:
 
     - name: 写入环境变量到 $GITHUB_ENV
       run: |
-        echo "RUNS_TO_KEEP=20" >> $GITHUB_ENV  # 统一使用 RUNS_TO_KEEP
+        echo "RUNS_TO_KEEP=50" >> $GITHUB_ENV  # 统一使用 RUNS_TO_KEEP
         echo "FETCH_LIMIT=500" >> $GITHUB_ENV
 
     # 2. 检查 GitHub CLI 版本（可选）
