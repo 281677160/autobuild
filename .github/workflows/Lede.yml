@@ -142,12 +142,6 @@ jobs:
         echo "RUNS_TO_KEEP=50" >> $GITHUB_ENV  # 统一使用 RUNS_TO_KEEP
         echo "FETCH_LIMIT=500" >> $GITHUB_ENV
 
-    # 2. 检查 GitHub CLI 版本（可选）
-    - name: 检查 GitHub CLI 版本
-      run: |
-        brew upgrade gh
-        gh --version
-
     # 3. 调用清理 Action
     - name: 清理Actions空间
       uses: 281677160/common@cishi
