@@ -30,43 +30,46 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-                                      target: [Lede]
+       target: [Lede]
 
-    steps:    
+    steps:
+    - name: 释放磁盘空间
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 1024
+        swap-size-mb: 2048
+        remove-dotnet: false
+        remove-haskell: false
+        remove-android: false
+        remove-docker-images: true
+    
     - name: 准备结束
       uses: actions/checkout@v4
 
     - name: 检测密匙/文件/版本
       uses: 281677160/common@mishi
-
-    - name: 释放Ubuntu磁盘空间
-      uses: endersonmenezes/free-disk-space@v2
-      with:
-        remove_android: true
-        remove_dotnet: true
-        remove_haskell: true
-        remove_tool_cache: true
-        remove_swap: true
-        remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
-        remove_packages_one_command: true
-        remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/share/glade* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell"
-        testing: false
         
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        sudo docker image prune --all --force
         sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /${{ env.DIY_WORK }}
-        sudo chown ${USER}:${GROUPS} /${{ env.DIY_WORK }}
+        mkdir -p /home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}
+        sudo chown $USER:$GROUPS /home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}
+        echo "WORK_DIR=/home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}" >> $GITHUB_ENV
+        
 
     - name: 下载"${{matrix.target}}"源码
       working-directory: /${{ env.DIY_WORK }}
       run: |
         git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
-        ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
+        ln -sf /${{ env.WORK_DIR }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
+        cd ${{ env.WORK_DIR }}
+        df -hT $PWD
+  
     
     - name: 公告
       continue-on-error: true
