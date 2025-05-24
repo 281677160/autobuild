@@ -108,16 +108,6 @@ jobs:
         # 请勿对 target: [Lede] 做任何修改
         
     steps:
-    - name: 释放磁盘空间
-      uses: easimon/maximize-build-space@master
-      with:
-        root-reserve-mb: 1024
-        swap-size-mb: 2048
-        remove-dotnet: false
-        remove-haskell: false
-        remove-android: false
-        remove-docker-images: true
-    
     - name: 准备结束
       uses: actions/checkout@v4
       
@@ -132,15 +122,14 @@ jobs:
         sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python2.7 python3 python3-pip libpython3-dev snapd
         sudo snap install jq
         sudo timedatectl set-timezone "$TZ"
-        mkdir -p /home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}
-        sudo chown $USER:$GROUPS /home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}
-        echo "WORK_DIR=/home/runner/work/autobuild/autobuild/${{ env.DIY_WORK }}" >> $GITHUB_ENV
+        sudo mkdir -p /${{ env.DIY_WORK }}
+        sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
     
     - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
-      working-directory: /${{ env.WORK_DIR }}
+      working-directory: /${{ env.DIY_WORK }}
       run: |
         git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
-        ln -sf /${{ env.WORK_DIR }}/openwrt ${GITHUB_WORKSPACE}/openwrt
+        ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
     
