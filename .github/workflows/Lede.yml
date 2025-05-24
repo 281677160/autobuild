@@ -141,7 +141,7 @@ jobs:
       continue-on-error: true
       uses: 281677160/common@cishi
       with:
-        runs_to_keep: 100
+        runs_to_keep: 20
         fetch_limit: 500
         github_token: ${{ secrets.REPO_TOKEN }}
  
