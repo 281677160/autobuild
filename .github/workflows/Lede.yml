@@ -136,6 +136,14 @@ jobs:
     - name: 公告
       continue-on-error: true
       uses: 281677160/common@message
+
+    - name: 公告
+      continue-on-error: true
+      uses: 281677160/common@cishi
+      with:
+        runs_to_keep: 100
+        fetch_limit: 500
+        github_token: ${{ secrets.REPO_TOKEN }}
  
     - name: 运行其他和SSH远程(make menuconfig)
       id: info
