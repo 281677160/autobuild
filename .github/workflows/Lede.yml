@@ -132,18 +132,26 @@ jobs:
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
-        echo "RUNS_KEEP=20" >> $GITHUB_ENV
-        echo "FETCH_LIM=500" >> $GITHUB_ENV
     
     - name: 公告
       continue-on-error: true
       uses: 281677160/common@message
 
+    - name: 写入环境变量到 $GITHUB_ENV
+      run: |
+        echo "RUNS_TO_KEEP=20" >> $GITHUB_ENV  # 统一使用 RUNS_TO_KEEP
+        echo "FETCH_LIMIT=500" >> $GITHUB_ENV
+
+    # 2. 检查 GitHub CLI 版本（可选）
+    - name: 检查 GitHub CLI 版本
+      run: gh --version
+
+    # 3. 调用清理 Action
     - name: 清理Actions空间
       uses: 281677160/common@cishi
       with:
-        runs_to_keep: ${{ env.RUNS_KEEP }}
-        fetch_limit: ${{ env.FETCH_LIM }}
+        runs_to_keep: ${{ env.RUNS_TO_KEEP }}
+        fetch_limit: ${{ env.FETCH_LIMIT }}
         github_token: ${{ secrets.REPO_TOKEN }}
  
     - name: 运行其他和SSH远程(make menuconfig)
