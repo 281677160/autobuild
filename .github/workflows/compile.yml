@@ -33,6 +33,11 @@ jobs:
        target: [Lede]
 
     steps:
+    - name: Maximize build space
+      uses: AdityaGarg8/remove-unwanted-software@v4.1
+      with:
+        remove-android: 'true'
+    
     - name: 释放Ubuntu磁盘空间
       uses: danshui-git/free-disk-space@main
       with:
