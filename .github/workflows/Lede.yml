@@ -148,6 +148,7 @@ jobs:
       with:
         runs_to_keep: ${{ env.RUNS_TO_KEEP }}
         fetch_limit: ${{ env.FETCH_LIMIT }}
+        github_repository: ${{ github.repository }}
         github_token: ${{ secrets.REPO_TOKEN }}
  
     - name: 运行其他和SSH远程(make menuconfig)
