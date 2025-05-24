@@ -132,17 +132,18 @@ jobs:
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
+        echo "RUNS_KEEP=20" >> $GITHUB_ENV
+        echo "FETCH_LIM=500" >> $GITHUB_ENV
     
     - name: 公告
       continue-on-error: true
       uses: 281677160/common@message
 
     - name: 清理Actions空间
-      continue-on-error: true
       uses: 281677160/common@cishi
       with:
-        runs_to_keep: 20
-        fetch_limit: 500
+        runs_to_keep: ${{ env.RUNS_KEEP }}
+        fetch_limit: ${{ env.FETCH_LIM }}
         github_token: ${{ secrets.REPO_TOKEN }}
  
     - name: 运行其他和SSH远程(make menuconfig)
