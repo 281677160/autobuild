@@ -144,7 +144,9 @@ jobs:
 
     # 2. 检查 GitHub CLI 版本（可选）
     - name: 检查 GitHub CLI 版本
-      run: gh --version
+      run: |
+        brew upgrade gh
+        gh --version
 
     # 3. 调用清理 Action
     - name: 清理Actions空间
