@@ -150,7 +150,7 @@ jobs:
       run: |
         echo "keep_releases=2" >> $GITHUB_ENV
         echo "releases_fetch=300" >> $GITHUB_ENV
-        echo "keep_workflows=10" >> $GITHUB_ENV
+        echo "keep_workflows=0" >> $GITHUB_ENV
         echo "workflows_fetch=300" >> $GITHUB_ENV
 
     - name: 清理releases和workflows
