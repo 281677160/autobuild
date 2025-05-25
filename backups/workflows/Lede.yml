@@ -45,11 +45,11 @@ on:
           - '关闭'
           - 'Telegram'
           - 'Pushplus'
-      RETAIN_MINUTE:
-        description: '清理[X]分钟之后的所有操作记录(最低30)'
+      KEEP_WORKFLOWS:
+        description: '清理workflows,保留[X]个runs不被清理'
         required: true
-        default: '10080'
-      KEEP_LATEST:
+        default: '30'
+      KEEP_RELESAES:
         description: '清理Releases,保留[X]个Releases不被清理'
         required: true
         default: '30'
@@ -136,37 +136,6 @@ jobs:
     - name: 公告
       continue-on-error: true
       uses: 281677160/common@message
-
-    - name: SSH远程连接（make menuconfig）
-      uses: danshui-git/debugger-action@main
-      with:
-        telegaram_token: ${{ env.TELEGRAM_BOT_TOKEN }}
-        telegaram_id: ${{ env.TELEGRAM_CHAT_ID }}
-        push_token: ${{ env.PUSH_PLUS_TOKEN }}
-        notification_code: ${{ env.INFORMATION_NOTICE }}
-        gh_token: ${{ secrets.REPO_TOKEN }}
-
-    - name: 写入环境变量到 $GITHUB_ENV
-      run: |
-        echo "keep_releases=2" >> $GITHUB_ENV
-        echo "releases_fetch=300" >> $GITHUB_ENV
-        echo "keep_workflows=0" >> $GITHUB_ENV
-        echo "workflows_fetch=300" >> $GITHUB_ENV
-
-    - name: 清理releases和workflows
-      uses: danshui-git/delete-releases-workflows@main
-      with:
-        delete_releases: true
-        prerelease_option: all
-        releases_keep_keyword: targz/Update
-        releases_keep_latest: ${{ env.keep_releases }}
-        delete_tags: true
-        max_releases_fetch: ${{ env.releases_fetch }}
-        delete_workflows: true
-        workflows_keep_latest: ${{ env.keep_workflows }}
-        max_workflows_fetch: ${{ env.workflows_fetch }}
-        repo: ${{ github.repository }}
-        gh_token: ${{ secrets.REPO_TOKEN }}
  
     - name: 运行其他和SSH远程(make menuconfig)
       id: info
@@ -176,6 +145,22 @@ jobs:
       continue-on-error: true
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
+
+    - name: 清理releases和workflows
+      continue-on-error: true
+      uses: danshui-git/delete-releases-workflows@main
+      with:
+        delete_releases: true
+        prerelease_option: all
+        releases_keep_keyword: targz/Update
+        releases_keep_latest: ${{ env.KEEP_RELESAES }}
+        delete_tags: true
+        max_releases_fetch: 300
+        delete_workflows: true
+        workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
+        max_workflows_fetch: 300
+        repo: ${{ github.repository }}
+        gh_token: ${{ secrets.REPO_TOKEN }}
         
     - name: 触发启动"${{ matrix.target }}"开始编译
       if: steps.info.outcome == 'success'
