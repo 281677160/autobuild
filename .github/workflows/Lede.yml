@@ -139,7 +139,7 @@ jobs:
 
     - name: 写入环境变量到 $GITHUB_ENV
       run: |
-        echo "keep_releases=20" >> $GITHUB_ENV
+        echo "keep_releases=2" >> $GITHUB_ENV
         echo "releases_fetch=300" >> $GITHUB_ENV
         echo "keep_workflows=10" >> $GITHUB_ENV
         echo "workflows_fetch=300" >> $GITHUB_ENV
