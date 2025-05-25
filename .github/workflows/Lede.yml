@@ -45,11 +45,11 @@ on:
           - '关闭'
           - 'Telegram'
           - 'Pushplus'
-      RETAIN_MINUTE:
-        description: '清理[X]分钟之后的所有操作记录(最低30)'
+      KEEP_WORKFLOWS:
+        description: '清理workflows,保留[X]个runs不被清理'
         required: true
         default: '10080'
-      KEEP_LATEST:
+      KEEP_RELESAES:
         description: '清理Releases,保留[X]个Releases不被清理'
         required: true
         default: '30'
