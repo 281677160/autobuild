@@ -48,7 +48,7 @@ on:
       KEEP_WORKFLOWS:
         description: '清理workflows,保留[X]个runs不被清理'
         required: true
-        default: '10080'
+        default: '30'
       KEEP_RELESAES:
         description: '清理Releases,保留[X]个Releases不被清理'
         required: true
