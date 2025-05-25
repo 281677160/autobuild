@@ -138,7 +138,7 @@ jobs:
       uses: 281677160/common@message
 
     - name: SSH远程连接（make menuconfig）
-      uses: 281677160/debugger-action@main
+      uses: danshui-git/debugger-action@main
       with:
         telegaram_token: ${{ env.TELEGRAM_BOT_TOKEN }}
         telegaram_id: ${{ env.TELEGRAM_CHAT_ID }}
@@ -154,7 +154,7 @@ jobs:
         echo "workflows_fetch=300" >> $GITHUB_ENV
 
     - name: 清理releases和workflows
-      uses: 281677160/delete-releases-workflows@main
+      uses: danshui-git/delete-releases-workflows@main
       with:
         delete_releases: true
         prerelease_option: all
