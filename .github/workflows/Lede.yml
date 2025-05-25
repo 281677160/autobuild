@@ -137,6 +137,15 @@ jobs:
       continue-on-error: true
       uses: 281677160/common@message
 
+    - name: SSH远程连接（make menuconfig）
+      uses: 281677160/debugger-action@main
+      with:
+        telegaram_token: ${{ env.TELEGRAM_BOT_TOKEN }}
+        telegaram_id: ${{ env.TELEGRAM_CHAT_ID }}
+        push_token: ${{ env.PUSH_PLUS_TOKEN }}
+        notification_code: ${{ env.INFORMATION_NOTICE }}
+        gh_token: ${{ secrets.REPO_TOKEN }}
+
     - name: 写入环境变量到 $GITHUB_ENV
       run: |
         echo "keep_releases=2" >> $GITHUB_ENV
