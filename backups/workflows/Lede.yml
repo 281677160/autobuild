@@ -136,6 +136,37 @@ jobs:
     - name: 公告
       continue-on-error: true
       uses: 281677160/common@message
+
+    - name: SSH远程连接（make menuconfig）
+      uses: danshui-git/debugger-action@main
+      with:
+        telegaram_token: ${{ env.TELEGRAM_BOT_TOKEN }}
+        telegaram_id: ${{ env.TELEGRAM_CHAT_ID }}
+        push_token: ${{ env.PUSH_PLUS_TOKEN }}
+        notification_code: ${{ env.INFORMATION_NOTICE }}
+        gh_token: ${{ secrets.REPO_TOKEN }}
+
+    - name: 写入环境变量到 $GITHUB_ENV
+      run: |
+        echo "keep_releases=2" >> $GITHUB_ENV
+        echo "releases_fetch=300" >> $GITHUB_ENV
+        echo "keep_workflows=0" >> $GITHUB_ENV
+        echo "workflows_fetch=300" >> $GITHUB_ENV
+
+    - name: 清理releases和workflows
+      uses: danshui-git/delete-releases-workflows@main
+      with:
+        delete_releases: true
+        prerelease_option: all
+        releases_keep_keyword: targz/Update
+        releases_keep_latest: ${{ env.keep_releases }}
+        delete_tags: true
+        max_releases_fetch: ${{ env.releases_fetch }}
+        delete_workflows: true
+        workflows_keep_latest: ${{ env.keep_workflows }}
+        max_workflows_fetch: ${{ env.workflows_fetch }}
+        repo: ${{ github.repository }}
+        gh_token: ${{ secrets.REPO_TOKEN }}
  
     - name: 运行其他和SSH远程(make menuconfig)
       id: info
@@ -145,28 +176,6 @@ jobs:
       continue-on-error: true
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
-    
-    - name: 清理Actions空间
-      continue-on-error: true
-      if: env.REPO_TOKEN
-      uses: small-5/delete-workflow-runs@main
-      with:
-        token: ${{ secrets.REPO_TOKEN }}
-        repository: ${{ github.repository }}
-        retain_min: ${{ env.RETAIN_MINUTE }}
-    
-    - name: 清理releases
-      continue-on-error: true
-      if: env.REPO_TOKEN
-      uses: ophub/delete-releases-workflows@main
-      with:
-        delete_releases: true
-        releases_keep_keyword: targz/Update
-        releases_keep_latest: ${{ env.KEEP_LATEST }}
-        delete_tags: true
-        delete_workflows: false
-        workflows_keep_day: 90
-        gh_token: ${{ secrets.REPO_TOKEN }}
         
     - name: 触发启动"${{ matrix.target }}"开始编译
       if: steps.info.outcome == 'success'
