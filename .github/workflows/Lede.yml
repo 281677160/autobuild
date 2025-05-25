@@ -142,14 +142,22 @@ jobs:
         echo "RUNS_TO_KEEP=50" >> $GITHUB_ENV  # 统一使用 RUNS_TO_KEEP
         echo "FETCH_LIMIT=500" >> $GITHUB_ENV
 
-    # 3. 调用清理 Action
-    - name: 清理Actions空间
-      uses: 281677160/common@cishi
+    - name: 清理releases和workflows
+      uses: 281677160/delete-releases-workflows@main
       with:
-        runs_to_keep: ${{ env.RUNS_TO_KEEP }}
-        fetch_limit: ${{ env.FETCH_LIMIT }}
-        github_repository: ${{ github.repository }}
-        github_token: ${{ secrets.REPO_TOKEN }}
+        delete_releases: true
+        prerelease_option: all
+        releases_keep_keyword: targz/Update
+        releases_keep_latest: 20
+        delete_tags: true
+        max_releases_fetch: 300
+        delete_workflows: true
+        workflows_keep_keyword: lede
+        workflows_keep_day: 0
+        workflows_keep_latest: 50
+        max_workflows_fetch: 300
+        repo: ${{ github.repository }}
+        gh_token: ${{ secrets.REPO_TOKEN }}
  
     - name: 运行其他和SSH远程(make menuconfig)
       id: info
