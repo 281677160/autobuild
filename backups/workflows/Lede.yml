@@ -132,6 +132,11 @@ jobs:
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
+        echo "${{ github.action }}"
+        echo "${{ github.actor }}"
+        echo "${{ github.repository_owner }}"
+        echo "${{ github.server_url }}"
+        echo "${{ github.graphql_url }}"
     
     - name: 公告
       continue-on-error: true
@@ -145,7 +150,7 @@ jobs:
       continue-on-error: true
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
-
+    
     - name: 清理releases和workflows
       continue-on-error: true
       uses: danshui-git/delete-releases-workflows@main
