@@ -149,7 +149,7 @@ jobs:
     
     - name: 清理releases和workflows
       continue-on-error: true
-      uses: 281677160/auto@main
+      uses: danshui-git/delete-releases-workflows@main
       with:
         delete_releases: true
         prerelease_option: all
