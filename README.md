@@ -1,25 +1,6 @@
 
 
 
----
-
-<details>
-<summary>🔎各种教程</summary>
-<br>
-<br />
-<br>
-
-《[github actions编译教程](https://github.com/danshui-git/shuoming#%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B)》
-
-《[Amlogic、Rockchip系列固件打包设置教程](https://github.com/danshui-git/shuoming/blob/master/Amlogic.md)》
-
-《[在线更新固件插件说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E6%9B%B4%E6%96%B0%E6%8F%92%E4%BB%B6.md)》
-
-<br />
-</details>
-
----
-
 <details>
 <summary>⬆️更新说明（2025年5月25号）</summary>
 <br>
@@ -207,6 +188,24 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
  
 7、我编译仓库里，增加大雕源码【gl-ax1800】分支选择，不是他 https://github.com/coolsnowwolf/lede 源码的分支，是他另外一个仓库 https://github.com/coolsnowwolf/openwrt-gl-ax1800 的源码，看他意思是专门给gl-ax1800路由器准备的，我看了下，也测试了一下，其实就是一个4.14内核的源码，有需要这个内核的朋友，也可以使用这个分支编译
 
+</details>
+
+---
+---
+
+<details>
+<summary>🔎各种教程</summary>
+<br>
+<br />
+<br>
+
+《[github actions编译教程](https://github.com/danshui-git/shuoming#%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B)》
+
+《[Amlogic、Rockchip系列固件打包设置教程](https://github.com/danshui-git/shuoming/blob/master/Amlogic.md)》
+
+《[在线更新固件插件说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E6%9B%B4%E6%96%B0%E6%8F%92%E4%BB%B6.md)》
+
+<br />
 </details>
 
 ---
