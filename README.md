@@ -8,30 +8,25 @@
  1、更换 [清理releases和workflows] 设置方法在这里 https://github.com/danshui-git/delete-releases-workflows
 
 
- ---
-<br>
+ ---<br>
   2025年5月24号
 
  1、修复[释放Ubuntu磁盘空间]运行时候有报错的问题，以前用的是 https://github.com/endersonmenezes/free-disk-space 这个作者的源码，我拉取过来修复了一点点东西，修复过后比以前多2~3G空间吧
 
 
- ---
-<br>
+ ---<br>
   2025年5月19号
 
  1、修复了一些小问题，增加删除缓存功能，如果编译的时候出现奇怪的错误，一般都是【ERROR: target/linux failed to build.】这样的，或者就是缓存弄的，把缓存的[√]去掉，再编译，就会先清理缓存，在编译的时候再次缓存，如果你一直去掉[√]编译，就等于一直不使用缓存
 
 
- ---
-<br>
+ ---<br>
   2025年5月11号
 
  1、Lienol源码那里删除了几个低版本的luci分支，我在脚本当中也删除了对官方的低版本luci编译，还有删除了天灵的低版本luci的，实在是passwall和ssr-plus更新太快了，4月24号成修复不能编译NaiveProxy问题，现在又不能编译了，如果你们不需要编译这些，你们可以自己加回去编译的
 
 
- ---
-<br>
-
+ ---<br>
   2025年4月24号
 
  1、修复了23.05以下不能编译的NaiveProxy问题
