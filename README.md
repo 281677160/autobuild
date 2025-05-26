@@ -9,7 +9,7 @@
   2025年5月25号
  <br><br>
 
- 1、更换 [清理releases和workflows]  <[设置方法在这里](https://github.com/danshui-git/delete-releases-workflows)>
+ 1、更换 [清理releases和workflows]  《[新的设置方法在这里](https://github.com/danshui-git/delete-releases-workflows)》
 
 
  ---
@@ -17,7 +17,7 @@
   2025年5月24号
  <br><br>
 
- 1、修复[释放Ubuntu磁盘空间]运行时候有报错的问题，以前用的是 [endersonmenezes](https://github.com/endersonmenezes/free-disk-space) 这个作者的源码，我拉取过来修复了一点点东西，修复过后比以前多2~3G空间吧
+ 1、修复[释放Ubuntu磁盘空间]运行时候有报错的问题，以前用的是《[endersonmenezes](https://github.com/endersonmenezes/free-disk-space)》这个作者的源码，我拉取过来修复了一点点东西，修复过后比以前多2~3G空间吧
 
 
  ---
