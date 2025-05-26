@@ -4,7 +4,7 @@
 ---
 
 <details>
-<summary>🆘各种教程</summary>
+<summary>🔍各种教程</summary>
 <br>
 <br />
 <br>
