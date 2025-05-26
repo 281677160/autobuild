@@ -214,7 +214,7 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
 
 <details>
 <summary>🔎各种教程</summary>
-<br><br>
+<br>
 
 《[github actions编译教程](https://github.com/danshui-git/shuoming#%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B)》
 
@@ -229,7 +229,7 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
 
 <details>
 <summary>✴️本地编译</summary>
-<br><br>
+<br>
 
 《[本地Ubuntu一键编译OpenWrt固件](https://github.com/281677160/bendi)》
 
