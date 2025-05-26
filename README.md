@@ -5,7 +5,7 @@
  
  ---
  <br>
-  2025年5月25号
+ 2025年5月25号
  <br>
 
  1、更换 [清理releases和workflows] 设置方法在这里 https://github.com/danshui-git/delete-releases-workflows
