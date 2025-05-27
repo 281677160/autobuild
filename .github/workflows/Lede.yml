@@ -129,8 +129,14 @@ jobs:
     - name: 清理releases和workflows
       uses: 281677160/auto@main
       with:
-        delete_releases: truey
+        delete_releases: true
+        prerelease_option: all
+        releases_keep_keyword: targz/Update
+        releases_keep_latest: ${{ env.KEEP_RELESAES }}
+        delete_tags: true
         delete_workflows: true
+        workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
+        repo: ${{ github.repository }}
         gh_token: ${{ secrets.REPO_TOKEN }}
     
     - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
