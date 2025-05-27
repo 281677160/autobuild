@@ -152,11 +152,11 @@ jobs:
       uses: 281677160/auto@main
       with:
         delete_releases: true
-        prerelease_option: all
+        prerelease_option: allh
         releases_keep_keyword: targz/Update
         releases_keep_latest: ${{ env.KEEP_RELESAES }}
         delete_tags: true
-        max_releases_fetch: 300.1
+        max_releases_fetch: 300
         delete_workflows: true
         workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
         max_workflows_fetch: 300
