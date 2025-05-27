@@ -135,7 +135,7 @@ jobs:
         releases_keep_latest: ${{ env.KEEP_RELESAES }}
         delete_tags: true
         delete_workflows: true
-        workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
+        workflows_keep_day: ${{ env.KEEP_WORKFLOWS }}
         repo: ${{ github.repository }}
         gh_token: ${{ secrets.REPO_TOKEN }}
     
