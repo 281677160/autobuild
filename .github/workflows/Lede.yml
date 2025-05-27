@@ -129,7 +129,7 @@ jobs:
     - name: 清理releases和workflows
       uses: 281677160/auto@main
       with:
-        delete_releases: true
+        delete_releases: truey
         delete_workflows: true
         gh_token: ${{ secrets.REPO_TOKEN }}
     
