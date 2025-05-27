@@ -151,7 +151,7 @@ jobs:
       continue-on-error: true
       uses: 281677160/auto@main
       with:
-        delete_releases: truet
+        delete_releases: true
         prerelease_option: all
         releases_keep_keyword: targz/Update
         releases_keep_latest: ${{ env.KEEP_RELESAES }}
