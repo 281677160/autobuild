@@ -16,6 +16,8 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
 if [ -z "$ASSETS" ]; then
   echo "没有找到符合条件的文件。"
   exit 0
+else
+  echo "$ASSETS"
 fi
 
 # 将文件按更新时间排序，保留时间最靠前的文件
