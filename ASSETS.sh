@@ -13,9 +13,12 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
 
 echo "$ASSETS"
 
-# 检查是否有符合条件的文件
-if [ -z "$ASSETS" ]; then
-  echo "没有找到符合条件的固件"
+# 计算符合条件的文件数量
+COUNT=$(echo "$ASSETS" | grep -c '^')
+
+# 检查是否有符合条件的文件（至少2个才继续，否则退出）
+if [ "$COUNT" -lt 2 ]; then
+  echo "符合条件的文件数量不足（需要至少2个文件）。找到 $COUNT 个文件。"
   exit 0
 fi
 
