@@ -10,6 +10,9 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
   "https://api.github.com/repos/$GIT_REPOSITORY/releases/tags/$UPDATE_TAG" \
   | jq -r --arg regex "$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX" '.assets[] | select(.name | test($regex)) | "\(.id) \(.name) \(.updated_at)"')
 
+
+echo "$ASSETS"
+
 # 检查是否有符合条件的文件
 if [ -z "$ASSETS" ]; then
   echo "没有找到符合条件的固件"
