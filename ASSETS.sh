@@ -3,7 +3,7 @@
 # 配置变量
 GIT_REPOSITORY="281677160/autobuild"  # 替换为你的仓库路径
 UPDATE_TAG="Update-x86"
-FIRMWARE_VERSION="24.10-Official-x86-64"
+FIRMWARE_VERSION="23.05-Lede-x86-64"
 BOOT_TYPE="uefi"
 FIRMWARE_SUFFIX=".img.gz"
 
