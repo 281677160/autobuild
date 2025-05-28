@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# 配置变量
-REPO_TOKEN="your_github_token"  # 替换为你的GitHub Token
-GIT_REPOSITORY="281677160/autobuild"  # 替换为你的仓库路径
-UPDATE_TAG="Update-x86"
-FIRMWARE_VERSION="24.10-Official-x86-64"
-BOOT_TYPE="uefi"
-FIRMWARE_SUFFIX=".img.gz"
-
 # 获取Release中的所有文件
 ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
   "https://api.github.com/repos/$GIT_REPOSITORY/releases/tags/$UPDATE_TAG" \
