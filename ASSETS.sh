@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # 配置变量
+REPO_TOKEN="your_github_token"  # 替换为你的GitHub Token
 GIT_REPOSITORY="281677160/autobuild"  # 替换为你的仓库路径
 UPDATE_TAG="Update-x86"
-FIRMWARE_VERSION="23.05-Lede-x86-64"
+FIRMWARE_VERSION="24.10-Official-x86-64"
 BOOT_TYPE="uefi"
 FIRMWARE_SUFFIX=".img.gz"
 
@@ -16,15 +17,14 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
 if [ -z "$ASSETS" ]; then
   echo "没有找到符合条件的文件。"
   exit 0
-else
-  echo "$ASSETS"
 fi
 
-# 将文件按更新时间排序，保留时间最靠前的文件
-readarray -t sorted_assets < <(echo "$ASSETS" | sort -k3,3)
+# 将文件按更新时间排序，保留时间最近的文件
+# 使用-tac命令将排序结果反转，确保时间最近的文件在最后
+readarray -t sorted_assets < <(echo "$ASSETS" | sort -k3,3 -r)
 
-# 删除除第一个文件之外的所有文件
-for asset in "${sorted_assets[@]:1}"; do
+# 删除除最后一个文件之外的所有文件
+for asset in "${sorted_assets[@]:0:${#sorted_assets[@]}-1}"; do
   asset_id=$(echo "$asset" | awk '{print $1}')
   asset_name=$(echo "$asset" | awk '{print $2}')
   echo "删除文件: $asset_name (ID: $asset_id)"
