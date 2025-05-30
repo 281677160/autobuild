@@ -231,7 +231,7 @@ jobs:
         remove_tool_cache: true
         remove_swap: true
         remove_docker: true
-        remove_packages: "azure-cli"
+        remove_packages: "false"
         remove_folders: "/usr/share/swift"
 
         #remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
