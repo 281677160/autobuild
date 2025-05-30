@@ -127,7 +127,6 @@ jobs:
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
 
     - name: 清理releases和workflows
-      continue-on-error: true
       uses: danshui-git/delete-releases-workflows@main
       with:
         delete_releases: true
@@ -140,7 +139,6 @@ jobs:
         workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
         max_workflows_fetch: 300
         repo: ${{ github.repository }}
-        gh_token: ${{ secrets.REPO_TOKEN }}
 
     
     - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
