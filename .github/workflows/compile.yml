@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Official/relevance/start'
+      - 'buconfig'
 
 env:
   GIT_REPOSITORY: ${{github.repository}}
@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-       target: [Official]
+       target: [Lede]
 
     steps:
     - name: 释放Ubuntu磁盘空间
@@ -115,6 +115,7 @@ jobs:
         bash ${{ env.COMMON_SH }} Diy_firmware
 
     - name: 发送[在线更新固件]至云端
+      continue-on-error: true
       if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: 281677160/common@cloud
         

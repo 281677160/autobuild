@@ -1,0 +1,5 @@
+CONFIG_TARGET_ath79=y
+CONFIG_TARGET_ath79_generic=y
+CONFIG_TARGET_ath79_generic_Default=y
+CONFIG_PACKAGE_auto-scripts=y
+CONFIG_PACKAGE_luci-lib-ipkg=y
