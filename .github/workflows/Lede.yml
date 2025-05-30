@@ -140,6 +140,7 @@ jobs:
         workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
         max_workflows_fetch: 300
         repo: ${{ github.repository }}
+        gh_token: ${{ secrets.REPO_TOKEN }}
 
     
     - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
