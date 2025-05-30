@@ -130,7 +130,7 @@ jobs:
       continue-on-error: true
       uses: danshui-git/delete-releases-workflows@main
       with:
-        delete_releases: truej
+        delete_releases: true
         prerelease_option: all
         releases_keep_keyword: targz/Update
         releases_keep_latest: ${{ env.KEEP_RELEASES }}
@@ -140,7 +140,7 @@ jobs:
         workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
         max_workflows_fetch: 300
         repo: ${{ github.repository }}
-        gh_token: ${{ secrets.REPO_TOKEN }}
+
     
     - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
       working-directory: /${{ env.DIY_WORK }}
