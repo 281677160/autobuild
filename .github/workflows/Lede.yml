@@ -126,7 +126,7 @@ jobs:
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
 
-    - name: 部署编译环境
+    - name: 部署
       run: |
         cd ${GITHUB_WORKSPACE}
         chmod +x assets.sh
