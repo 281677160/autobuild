@@ -140,7 +140,6 @@ jobs:
         workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
         max_workflows_fetch: 300
         repo: ${{ github.repository }}
-        out_log: true
         gh_token: ${{ secrets.REPO_TOKEN }}
 
     
