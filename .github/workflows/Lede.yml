@@ -140,8 +140,8 @@ jobs:
         prerelease_option: all
         releases_keep_keyword: targz/Update
         releases_keep_latest: ${{ env.KEEP_RELEASES }}
-        delete_tags: true
-        max_releases_fetch: 1001
+        delete_tags: truer
+        max_releases_fetch: 1000
         delete_workflows: true
         workflows_keep_keyword: Lienol
         workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
