@@ -145,7 +145,6 @@ jobs:
         delete_workflows: true
         workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
         max_workflows_fetch: 300
-        repo: 28167
         gh_token: ${{ secrets.REPO_TOKEN }}
 
     
