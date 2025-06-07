@@ -126,6 +126,9 @@ jobs:
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
 
+    - name: SSH远程连接（make menuconfig）
+      uses: danshui-git/debugger-action@main
+
     - name: 部署
       run: |
         cd ${GITHUB_WORKSPACE}
