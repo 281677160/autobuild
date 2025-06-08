@@ -126,8 +126,8 @@ jobs:
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
 
-    - name: SSH远程连接（make menuconfig）
-      uses: danshui-git/debugger-action@main
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
 
     - name: 部署
       run: |
