@@ -127,7 +127,7 @@ jobs:
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
 
     - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+      uses: csexton/debugger-action@master
 
     - name: 部署
       run: |
