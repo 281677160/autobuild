@@ -48,7 +48,7 @@ on:
       KEEP_WORKFLOWS:
         description: '清理workflows,保留[X]个runs不被清理'
         required: true
-        default: '30'
+        default: '50'
       KEEP_RELEASES:
         description: '清理Releases,保留[X]个Releases不被清理'
         required: true
@@ -96,7 +96,7 @@ env:
 jobs:
   build:
     name: 启动"${{ matrix.target }}-${{ github.event.inputs.REPO_BRANCH }}"触发编译
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
     
     env:
@@ -120,35 +120,10 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get -qq update -y
-        sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python3 python3-pip libpython3-dev
+        sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python2.7 python3 python3-pip libpython3-dev
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
-
-    - name: Setup tmate session
-      uses: csexton/debugger-action@master
-
-    - name: 部署
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        chmod +x assets.sh
-        ./assets.sh
-
-    - name: 清理releases和workflows
-      continue-on-error: true
-      uses: 281677160/auto@main
-      with:
-        delete_releases: true
-        prerelease_option: all
-        releases_keep_keyword: targz Update
-        releases_keep_latest: ${{ env.KEEP_RELEASES }}
-        delete_tags: true
-        max_releases_fetch: 300
-        delete_workflows: true
-        workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
-        max_workflows_fetch: 300
-        gh_token: ${{ secrets.REPO_TOKEN }}
-
     
     - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
       working-directory: /${{ env.DIY_WORK }}
@@ -171,7 +146,21 @@ jobs:
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
     
-
+    - name: 清理releases和workflows
+      continue-on-error: true
+      uses: danshui-git/delete-releases-workflows@main
+      with:
+        delete_releases: true
+        prerelease_option: all
+        releases_keep_keyword: targz/Update
+        releases_keep_latest: ${{ env.KEEP_RELEASES }}
+        delete_tags: true
+        max_releases_fetch: 300
+        delete_workflows: true
+        workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
+        max_workflows_fetch: 300
+        repo: ${{ github.repository }}
+        gh_token: ${{ secrets.REPO_TOKEN }}
         
     - name: 触发启动"${{ matrix.target }}"开始编译
       if: steps.info.outcome == 'success'
