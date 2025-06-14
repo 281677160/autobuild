@@ -115,6 +115,11 @@ jobs:
     - name: 检测密匙/文件/版本
       uses: 281677160/common@mishi
 
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      with:
+        detached: true
+
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
