@@ -1,13 +1,4 @@
-<?xml version="1.0" encoding='utf-8'?>
-<!-- 
-// ============================================================
-// == 				MUONLINE SERVER EMULATOR				 ==
-// == 				   POWERED BY DV-Team				 	 ==
-//=============================================================
-//
-//~~ For detailed explanation of the bags system refer to ### Item Bags System Description ###.txt included in \Data\ItemBags
--->
-
+<?xml version='1.0' encoding='utf-8'?>
 <ItemBag>
 	<BagConfig Name="Item_(14,11,0)_Luck_Box" ItemRate="10000" SetItemRate="0" SetItemCount="1" MasterySetItemInclude="0" MoneyDrop="5000" IsPentagramForBeginnersDrop="0" PartyDropRate="0" PartyOneDropOnly="0" PartyShareType="0" BagUseEffect="-1" BagUseRate="10000" />
 	<SummonBook Enable="0" DropRate="0" ItemCat="0" ItemIndex="0" />
