@@ -314,7 +314,7 @@ function LoadItemBag() -- Bags Load
 -- ====================================================================
 -- MonsterBags -- BagType, BagId, 0, MonsterID
 -- ====================================================================
-	AddItemBag(BAG_MONSTER, 300, 0,18)-- 'Monster_(18)_Gorgon') -- DropFunction /2/
+	AddItemBag(BAG_MONSTER, 300, 0,0)-- 'Monster_(18)_Gorgon') -- DropFunction /2/
 	AddItemBag(BAG_MONSTER, 301, 0,25)-- 'Monster_(25)_Ice_Queen') -- DropFunction /2/
 	AddItemBag(BAG_MONSTER, 302, 0,38)-- 'Monster_(38)_Balrog') -- DropFunction /2/
 	AddItemBag(BAG_MONSTER, 303, 0,43)-- 'Monster_(43)_Golden_Budge_Dragon') -- DropFunction /2/
@@ -491,10 +491,9 @@ function LoadItemBag() -- Bags Load
 	AddItemBag(BAG_EVENT, 697, 809,0)-- 'Event_PlayTime_Round_10')
 	AddItemBag(BAG_EVENT, 698, 850,0)-- 'Event_ImperialGuardian_Level(1)_Additional_Reward')
 	AddItemBag(BAG_EVENT, 699, 900,0)-- 'Event_BlessingBox_(899)_Kill')
-	AddItemBag(BAG_EVENT, 700, 1000,0)-- 'Mix_ChaosCard_Reward
-	AddItemBag(BAG_EVENT, 701, 1001,0)-- 'Mix_ChaosCard_Gold_Reward
-	AddItemBag(BAG_EVENT, 702, 1002,0)-- 'Mix_ChaosCard_Gold_Reward
-	AddItemBag(BAG_EVENT, 703, 1003,0)-- 'Mix_ChaosCard_Rare_Reward
+	AddItemBag(BAG_EVENT, 700, 1000,0)-- 'Event_LastManStanding_Looser_Reward') -- DropFunction /3/
+	AddItemBag(BAG_EVENT, 701, 1050,0)-- 'Event_LastManStanding_Winner_Reward') -- DropFunction /3/
+	--AddItemBag(BAG_EVENT702, 702, 48,0)-- 'Mix_Cherry_Blossom_Red_Reward') -- DropFunction /4/
 end
 
 -- ### /1/ Drop Item (using Item Bag Structure) ### --
@@ -562,16 +561,8 @@ function CommonBagItemDrop(aIndex, MapNumber, X, Y,UseType, GremoryCaseType, Gre
 
 		if (ItemInfo.Anc == 1) then -- Says item must be ancient (have to be configured as possible ancient)
 			IsAncient = GetAncientOpt(ItemID)
-		elseif (ItemInfo.Anc == 5)
-		or (ItemInfo.Anc == 6)
-		or (ItemInfo.Anc == 9)
-		or (ItemInfo.Anc == 10)
-		or (ItemInfo.Anc == 20)
-		or (ItemInfo.Anc == 24)
-		then
-			IsAncient = ItemInfo.Anc
 		end
-		
+
 
 		-- Item must be of Type 2 in item list settings
 		if (IsSocketItem(ItemID) == true) then
@@ -691,11 +682,6 @@ function CommonBagItemDrop(aIndex, MapNumber, X, Y,UseType, GremoryCaseType, Gre
 	else
 		MuunEvoItemID = 0;
 	end
-	
-	LogColor(1,Exe)
-	LogColor(1,MasteryExe)
-	LogColor(1,ItemInfo)
-	
 	
 	if UseType == BAG_REWARD_GREMORY_CASE then
 		return InsertItem_GremoryCase(aIndex, GremoryCaseType, GremoryCaseGiveType, ItemID, ItemLevel, ItemDur, IsSkill, IsLuck, IsOption, IsAncient, IsSocket, IsElemental, MuunEvoItemID, Exe, MasteryExe, Socket1, Socket2, Socket3, Socket4,  Socket5, SocketBonus, ReceiptDuration, Duration,ItemInfo.Count)
