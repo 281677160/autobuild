@@ -1,16 +1,560 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!-- 
-// ============================================================
-// == 				MUONLINE SERVER EMULATOR				 ==
-// == 				   POWERED BY DV-Team				 	 ==
-//=============================================================
-//
-//~~ For detailed explanation of the bags system refer to ### Item Bags System Description ###.txt included in \Data\ItemBags
--->
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <locale.h>
 
-<ItemBag>
-	<BagConfig Name="Item_(14,401,0)_Ruud Box_(50)" ItemRate="10000" SetItemRate="0" SetItemCount="1" MasterySetItemInclude="0" MoneyDrop="0" IsPentagramForBeginnersDrop="0" PartyDropRate="0" PartyOneDropOnly="0" PartyShareType="0" BagUseEffect="-1" BagUseRate="10000" />
-	<SummonBook Enable="0" DropRate="0" ItemCat="0" ItemIndex="0" />
-	<AddCoin Enable="0" CoinType="0" CoinValue="0" PlayerMinLevel="1" PlayerMaxLevel="MAX" PlayerMinReset="0" PlayerMaxReset="MAX" />
-	<Ruud GainRate="10000" MinValue="50" MaxValue="50" PlayerMinLevel="1" PlayerMaxLevel="MAX" PlayerMinReset="0" PlayerMaxReset="MAX" />
-</ItemBag>
+// Pre-defined category names in Chinese
+const char* categoryNames[] = {
+    "剑/刃",    // 0
+    "斧",       // 1
+    "槌",       // 2
+    "长兵器",   // 3
+    "弓/弩",    // 4
+    "杖",       // 5
+    "盾牌",     // 6
+    "头盔",     // 7
+    "铠甲",     // 8
+    "护腿",     // 9
+    "手套",     // 10
+    "靴子",     // 11
+    "项链",     // 12
+    "戒指",     // 13
+    "道具",     // 14
+    "翅膀",     // 15
+    "宠物",     // 16
+    "",         // 17 (unused)
+    "",         // 18 (unused)
+    "套装",     // 19
+    "特殊"      // 20
+};
+
+// Pre-defined attribute lists for each category
+const char* category0_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "TwoHand", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "AttackSpeed", "Durability", "MagicDurability", "MagicPower", "CombatPower", "AttackSuccessRate", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+// ... 其他 category_attrs 省略，保持不变 ...
+
+// 定义每个大编号对应的属性和排序
+typedef struct {
+    int index;
+    const char** attributes;
+} CategoryAttributes;
+
+// 定义每个大编号的属性和排序
+CategoryAttributes categories[] = {
+    {0, category0_attrs},
+    // ... 其他 categories 省略，保持不变 ...
+};
+
+// 获取大编号对应的属性
+const char** getAttributes(int categoryIndex) {
+    for (int i = 0; i < sizeof(categories) / sizeof(categories[0]); i++) {
+        if (categories[i].index == categoryIndex) {
+            return categories[i].attributes;
+        }
+    }
+    return NULL;
+}
+
+// 将item.txt转换为item.xml
+void convertToXML(const char* inputFilePath, const char* outputFilePath) {
+    // Set locale to handle Chinese characters
+    setlocale(LC_ALL, "zh_CN.UTF-8");
+    
+    FILE* inputFile = fopen(inputFilePath, "r");
+    FILE* outputFile = fopen(outputFilePath, "w");
+
+    if (!inputFile || !outputFile) {
+        printf("Error opening file.\n");
+        return;
+    }
+
+    // 写入XML头 with UTF-8 encoding
+    fprintf(outputFile, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    fprintf(outputFile, "<!--\n");
+    fprintf(outputFile, "// ============================================================\n");
+    fprintf(outputFile, "// ==               File Name: ItemList                      ==\n");
+    fprintf(outputFile, "// ============================================================\n");
+    fprintf(outputFile, "-->\n\n");
+    fprintf(outputFile, "<ItemList>\n");
+
+    char line[1024];
+    int currentCategory = -1;
+    int firstItemInCategory = 1;
+    
+    while (fgets(line, sizeof(line), inputFile)) {
+        // 跳过空行和注释行
+        if (strlen(line) <= 1 || line[0] == '/' || line[0] == '#') {
+            continue;
+        }
+
+        char* token;
+        int totalID, categoryID, subID;
+        char modelPath[256], modelFile[256], itemName[256];
+        int kindA, kindB, type, twoHand, dropLevel, wearPart, skillIndex, width, height;
+        int minAttack, maxAttack, defenseSuccessRate, defense, magicResist, attackSpeed, moveSpeed;
+        int durability, magicDurability, magicPower, combatPower;
+        int reqStrength, reqAgility, reqEnergy, reqVitality, reqCommand;
+        int useLevel, attribute, price, set;
+        int darkWizard, darkKnight, fairyElf, magicGladiator, darkLord, summoner, rageFighter, growLancer;
+        int runeWizard, slayer, gunCrusher, lightWizard, lemuriaMage, illusionKnight;
+        int dump, transaction, personalStore, storeWarehouse, sellToNPC, expensiveItem, repair;
+        int kindAValue, kindBValue;
+        int iceRes, poisonRes, lightRes, fireRes, earthRes, windRes, waterRes;
+        int masteryPentagram = 0, pentagramType = 0, elementalDamage = 0, elementalDefense = 0;
+
+        // 默认值
+        int serial = 1;  // 默认值
+        int option = 1;  // 默认值
+        int drop = 1;    // 默认值
+        int attackSuccessRate = 0;  // 默认值
+        int alchemist = 0;  // 默认值
+        int nonValue = 0;  // 默认值
+        int masteryGrade = 0;  // 默认值
+
+        // 解析每一行
+        token = strtok(line, "\t");
+        if (!token) continue;
+        totalID = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        categoryID = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        subID = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        strcpy(modelPath, token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        strcpy(modelFile, token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        strcpy(itemName, token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        kindA = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        kindB = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        type = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        twoHand = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        dropLevel = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        wearPart = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        skillIndex = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        width = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        height = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        minAttack = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        maxAttack = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        defenseSuccessRate = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        defense = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        magicResist = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        attackSpeed = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        moveSpeed = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        durability = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        magicDurability = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        magicPower = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        combatPower = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        reqStrength = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        reqAgility = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        reqEnergy = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        reqVitality = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        reqCommand = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        useLevel = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        attribute = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        price = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        set = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        darkWizard = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        darkKnight = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        fairyElf = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        magicGladiator = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        darkLord = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        summoner = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        rageFighter = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        growLancer = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        runeWizard = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        slayer = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        gunCrusher = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        lightWizard = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        lemuriaMage = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        illusionKnight = atoi(token);
+
+        // 元素抗性
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        iceRes = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        poisonRes = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        lightRes = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        fireRes = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        earthRes = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        windRes = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        waterRes = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        dump = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        transaction = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        personalStore = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        storeWarehouse = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        sellToNPC = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        expensiveItem = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        repair = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        kindAValue = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        kindBValue = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        nonValue = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        masteryGrade = atoi(token);
+
+        // 获取大编号对应的属性
+        const char** attributes = getAttributes(categoryID);
+        if (!attributes) {
+            printf("Category %d not found.\n", categoryID);
+            continue;
+        }
+
+        // Get category name
+        const char* categoryName = "未知";
+        if (categoryID >= 0 && categoryID < sizeof(categoryNames)/sizeof(categoryNames[0])) {
+            categoryName = categoryNames[categoryID];
+        }
+        
+        // Only start new category if different from current
+        if (categoryID != currentCategory) {
+            if (currentCategory != -1) {
+                fprintf(outputFile, "\t</Category>\n"); // Close previous category
+            }
+            fprintf(outputFile, "\t<Category Index=\"%d\" Name=\"%s\">\n", categoryID, categoryName);
+            currentCategory = categoryID;
+            firstItemInCategory = 1;
+        }
+
+        // Handle slot value conversion
+        int displaySlot = (wearPart == 255) ? -1 : wearPart;
+
+        // 写入Item
+        fprintf(outputFile, "\t\t<Item Index=\"%d\" Name=\"%s\"", subID, itemName);
+
+        // 特殊处理Slot属性
+        fprintf(outputFile, " Slot=\"%d\"", displaySlot);
+
+        // 遍历属性列表
+        for (int i = 0; attributes[i] != NULL; i++) {
+            const char* attr = attributes[i];
+            
+            // 跳过已经显式处理的属性
+            if (strcmp(attr, "Index") == 0 || strcmp(attr, "Name") == 0 || strcmp(attr, "Slot") == 0) {
+                continue;
+            }
+            
+            // 正确映射属性
+            if (strcmp(attr, "SkillIndex") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, skillIndex);
+            } else if (strcmp(attr, "TwoHand") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, twoHand);
+            } else if (strcmp(attr, "Width") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, width);
+            } else if (strcmp(attr, "Height") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, height);
+            } else if (strcmp(attr, "Serial") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, serial);  // 使用默认值
+            } else if (strcmp(attr, "Option") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, option);  // 使用默认值
+            } else if (strcmp(attr, "Drop") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, drop);  // 使用默认值
+            } else if (strcmp(attr, "DropLevel") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, dropLevel);
+            } else if (strcmp(attr, "ReqLevel") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, useLevel);
+            } else if (strcmp(attr, "MinDamage") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, minAttack);
+            } else if (strcmp(attr, "MaxDamage") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, maxAttack);
+            } else if (strcmp(attr, "AttackSpeed") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, attackSpeed);
+            } else if (strcmp(attr, "Durability") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, durability);
+            } else if (strcmp(attr, "MagicDurability") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, magicDurability);
+            } else if (strcmp(attr, "MagicPower") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, magicPower);
+            } else if (strcmp(attr, "CombatPower") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, combatPower);
+            } else if (strcmp(attr, "AttackSuccessRate") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, attackSuccessRate);  // 使用默认值
+            } else if (strcmp(attr, "ReqStrength") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, reqStrength);
+            } else if (strcmp(attr, "ReqAgility") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, reqAgility);
+            } else if (strcmp(attr, "ReqEnergy") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, reqEnergy);
+            } else if (strcmp(attr, "ReqVitality") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, reqVitality);
+            } else if (strcmp(attr, "ReqCommand") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, reqCommand);
+            } else if (strcmp(attr, "SetAttrib") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, set);
+            } else if (strcmp(attr, "DarkWizard") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, darkWizard);
+            } else if (strcmp(attr, "DarkKnight") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, darkKnight);
+            } else if (strcmp(attr, "FairyElf") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, fairyElf);
+            } else if (strcmp(attr, "MagicGladiator") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, magicGladiator);
+            } else if (strcmp(attr, "DarkLord") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, darkLord);
+            } else if (strcmp(attr, "Summoner") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, summoner);
+            } else if (strcmp(attr, "RageFighter") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, rageFighter);
+            } else if (strcmp(attr, "GrowLancer") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, growLancer);
+            } else if (strcmp(attr, "RuneWizard") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, runeWizard);
+            } else if (strcmp(attr, "Slayer") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, slayer);
+            } else if (strcmp(attr, "GunCrusher") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, gunCrusher);
+            } else if (strcmp(attr, "LightWizard") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, lightWizard);
+            } else if (strcmp(attr, "LemuriaMage") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, lemuriaMage);
+            } else if (strcmp(attr, "IllusionKnight") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, illusionKnight);
+            } else if (strcmp(attr, "Alchemist") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, alchemist);  // 使用默认值
+            } else if (strcmp(attr, "Type") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, type);
+            } else if (strcmp(attr, "Dump") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, dump);
+            } else if (strcmp(attr, "Transaction") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, transaction);
+            } else if (strcmp(attr, "PersonalStore") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, personalStore);
+            } else if (strcmp(attr, "StoreWarehouse") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, storeWarehouse);
+            } else if (strcmp(attr, "SellToNPC") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, sellToNPC);
+            } else if (strcmp(attr, "ExpensiveItem") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, expensiveItem);
+            } else if (strcmp(attr, "Repair") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, repair);
+            } else if (strcmp(attr, "KindA") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, kindA);
+            } else if (strcmp(attr, "KindB") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, kindB);
+            } else if (strcmp(attr, "NonValue") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, nonValue);  // 使用默认值
+            } else if (strcmp(attr, "MasteryGrade") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, masteryGrade);  // 使用默认值
+            } else if (strcmp(attr, "ModelPath") == 0) {
+                fprintf(outputFile, " %s=\"%s\"", attr, modelPath);
+            } else if (strcmp(attr, "ModelFile") == 0) {
+                fprintf(outputFile, " %s=\"%s\"", attr, modelFile);
+            } else if (strcmp(attr, "Money") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, price);
+            } else if (strcmp(attr, "Defense") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, defense);
+            } else if (strcmp(attr, "MagicDefense") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, magicResist);
+            } else if (strcmp(attr, "WalkSpeed") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, moveSpeed);
+            } else if (strcmp(attr, "IceRes") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, iceRes);
+            } else if (strcmp(attr, "PoisonRes") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, poisonRes);
+            } else if (strcmp(attr, "LightRes") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, lightRes);
+            } else if (strcmp(attr, "FireRes") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, fireRes);
+            } else if (strcmp(attr, "EarthRes") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, earthRes);
+            } else if (strcmp(attr, "WindRes") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, windRes);
+            } else if (strcmp(attr, "WaterRes") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, waterRes);
+            } else if (strcmp(attr, "MasteryPentagram") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, masteryPentagram);
+            } else if (strcmp(attr, "PentagramType") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, pentagramType);
+            } else if (strcmp(attr, "ElementalDamage") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, elementalDamage);
+            } else if (strcmp(attr, "ElementalDefense") == 0) {
+                fprintf(outputFile, " %s=\"%d\"", attr, elementalDefense);
+            } else if (strcmp(attr, "InventoryType") == 0) {
+                // 特殊处理，假设InventoryType
