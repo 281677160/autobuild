@@ -30,7 +30,26 @@ const char* categoryNames[] = {
 
 // Pre-defined attribute lists for each category
 const char* category0_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "TwoHand", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "AttackSpeed", "Durability", "MagicDurability", "MagicPower", "CombatPower", "AttackSuccessRate", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
-// ... 其他 category_attrs 省略，保持不变 ...
+const char* category1_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "TwoHand", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "AttackSpeed", "Durability", "MagicDurability", "MagicPower", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category2_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "TwoHand", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "AttackSpeed", "Durability", "MagicDurability", "MagicPower", "CombatPower", "AttackSuccessRate", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category3_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "TwoHand", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "AttackSpeed", "Durability", "MagicDurability", "MagicPower", "CombatPower", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category4_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "TwoHand", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "AttackSpeed", "Durability", "MagicDurability", "MagicPower", "AttackSuccessRate", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category5_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "TwoHand", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "AttackSpeed", "Durability", "MagicDurability", "MagicPower", "AttackSuccessRate", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category6_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Defense", "SuccessfulBlocking", "ElementalDefense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category7_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Defense", "MagicDefense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category8_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Defense", "MagicDefense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category9_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Defense", "MagicDefense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category10_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Defense", "AttackSpeed", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category11_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Defense", "WalkSpeed", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category12_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "Defense", "Durability", "ReqVitality", "ReqEnergy", "ReqStrength", "ReqAgility", "ReqCommand", "Money", "MasteryPentagram", "PentagramType", "ElementalDamage", "ElementalDefense", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category13_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Durability", "IceRes", "PoisonRes", "LightRes", "FireRes", "EarthRes", "WindRes", "WaterRes", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category14_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "Money", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category15_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "ReqVitality", "ReqEnergy", "Money", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category16_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "Defense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "InventoryType", "ModelPath", "ModelFile", NULL};
+const char* category17_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "Defense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category18_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "ReqLevel", "MinDamage", "MaxDamage", "Defense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category19_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "Money", "ReqLevel", "Defense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
+const char* category20_attrs[] = {"Index", "Name", "Slot", "SkillIndex", "Width", "Height", "Serial", "Option", "Drop", "DropLevel", "Money", "ReqLevel", "Defense", "Durability", "ReqStrength", "ReqAgility", "ReqEnergy", "ReqVitality", "ReqCommand", "SetAttrib", "DarkWizard", "DarkKnight", "FairyElf", "MagicGladiator", "DarkLord", "Summoner", "RageFighter", "GrowLancer", "RuneWizard", "Slayer", "GunCrusher", "LightWizard", "LemuriaMage", "IllusionKnight", "Alchemist", "Type", "Dump", "Transaction", "PersonalStore", "StoreWarehouse", "SellToNPC", "ExpensiveItem", "Repair", "KindA", "KindB", "NonValue", "MasteryGrade", "ModelPath", "ModelFile", NULL};
 
 // 定义每个大编号对应的属性和排序
 typedef struct {
@@ -41,7 +60,26 @@ typedef struct {
 // 定义每个大编号的属性和排序
 CategoryAttributes categories[] = {
     {0, category0_attrs},
-    // ... 其他 categories 省略，保持不变 ...
+    {1, category1_attrs},
+    {2, category2_attrs},
+    {3, category3_attrs},
+    {4, category4_attrs},
+    {5, category5_attrs},
+    {6, category6_attrs},
+    {7, category7_attrs},
+    {8, category8_attrs},
+    {9, category9_attrs},
+    {10, category10_attrs},
+    {11, category11_attrs},
+    {12, category12_attrs},
+    {13, category13_attrs},
+    {14, category14_attrs},
+    {15, category15_attrs},
+    {16, category16_attrs},
+    {17, category17_attrs},  // 添加缺失的大编号
+    {18, category18_attrs},  // 添加缺失的大编号
+    {19, category19_attrs},
+    {20, category20_attrs}
 };
 
 // 获取大编号对应的属性
@@ -95,9 +133,9 @@ void convertToXML(const char* inputFilePath, const char* outputFilePath) {
         int reqStrength, reqAgility, reqEnergy, reqVitality, reqCommand;
         int useLevel, attribute, price, set;
         int darkWizard, darkKnight, fairyElf, magicGladiator, darkLord, summoner, rageFighter, growLancer;
-        int runeWizard, slayer, gunCrusher, lightWizard, lemuriaMage, illusionKnight;
+        int runeWizard, slayer, gunCrusher, lightWizard, lemuriaMage, illusionKnight, alchemist;
         int dump, transaction, personalStore, storeWarehouse, sellToNPC, expensiveItem, repair;
-        int kindAValue, kindBValue;
+        int kindAValue, kindBValue, nonValue, masteryGrade;
         int iceRes, poisonRes, lightRes, fireRes, earthRes, windRes, waterRes;
         int masteryPentagram = 0, pentagramType = 0, elementalDamage = 0, elementalDefense = 0;
 
@@ -306,6 +344,10 @@ void convertToXML(const char* inputFilePath, const char* outputFilePath) {
         token = strtok(NULL, "\t");
         if (!token) continue;
         illusionKnight = atoi(token);
+
+        token = strtok(NULL, "\t");
+        if (!token) continue;
+        alchemist = atoi(token);
 
         // 元素抗性
         token = strtok(NULL, "\t");
@@ -557,4 +599,3 @@ void convertToXML(const char* inputFilePath, const char* outputFilePath) {
             } else if (strcmp(attr, "ElementalDefense") == 0) {
                 fprintf(outputFile, " %s=\"%d\"", attr, elementalDefense);
             } else if (strcmp(attr, "InventoryType") == 0) {
-                // 特殊处理，假设InventoryType
